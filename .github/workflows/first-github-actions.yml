@@ -6,4 +6,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -name: Echo a String
-       run: eaho "Hello ! this is my first hithub actions workflow file"
+       run: echo "Hello ! this is my first hithub actions workflow file"

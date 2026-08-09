@@ -1,0 +1,9 @@
+name: Run Shell Commands
+on: [push]
+
+jobs:
+  run-shell-command: 
+    runs-on: ubuntu-latest
+    steps:
+      -name: Echo a String
+      run: each "Hello ! this is my first hithub actions workflow file"

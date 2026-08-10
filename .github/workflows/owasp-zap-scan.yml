@@ -24,6 +24,7 @@ jobs:
           docker run --rm -v ${{ github.workspace }}:/zap/wrk \
             ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
             -t http://juice-shop:3000 \
+            -c zap.yaml \
             -r zap_report.html -J zap_report.json -w zap_report.md -a
 
       - name: Upload ZAP Reports

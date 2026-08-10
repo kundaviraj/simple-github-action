@@ -1,35 +1,21 @@
-name: Run OWASP ZAP Automation Scan
+name: OWASP ZAP Integration with GitHub Actions
 
-on:
-  workflow_dispatch:   # manual trigger
-  push:                # run on every push
-    branches: [ main ]
+on: [push]
 
 jobs:
   zap_scan:
     runs-on: ubuntu-latest
-
-    services:
-      juice-shop:
-        image: bkimminich/juice-shop
-        ports:
-          - 3000:3000
-
+    name: Scan the web application
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run OWASP ZAP Automation Scan
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/zap/wrk \
-            ghcr.io/zaproxy/zaproxy:stable zap-automation.py \
-            -c zap.yaml
-
-      - name: Upload ZAP Reports
-        uses: actions/upload-artifact@v4
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
-          name: zap-reports
-          path: |
-            zap_report.html
-            zap_report.json
-            zap_report.md
+          ref: master
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          docker_name: 'owasp/zap2docker-stable'
+          # This points the GitHub Actions scanner straight to your laptop
+          target: 'https://ngrok-free.dev'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
